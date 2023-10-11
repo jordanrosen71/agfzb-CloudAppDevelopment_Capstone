@@ -14,46 +14,33 @@
 </head>
 
 <body>
-<!-- Navbar -->
-<!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Dealership</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/djangoapp/">Home <span class="sr-only">(current)</span></a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/djangoapp/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/djangoapp/about">About</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/djangoapp/contact">Contact</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/djangoapp/contact">Contact <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-
-            {% if user.is_authenticated %}
-                <!-- Display username/first name and sign-out button if user is authenticated -->
-                <span class="navbar-text mr-3">
-                    Welcome, {{ user.first_name|default:user.username }}
-                </span>
-                <a class="btn btn-outline-danger" href="/djangoapp/logout/">Sign Out</a>
-            {% else %}
-                <!-- Display login form and signup button if user is NOT authenticated -->
-                <form class="form-inline my-2 my-lg-0" action="/djangoapp/login/" method="post">
-                    {% csrf_token %}
-                    <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username">
-                    <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password" name="password">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-                </form>
-                <a class="btn btn-outline-primary ml-2" href="/djangoapp/login/">Signup</a>
-            {% endif %}
         </div>
     </nav>
 
     <!-- Dealer Table -->
+    <ul>
+        <li>address</li>
+        <li>phone number</li>
+    </ul>
+
 </body>
 
 </html>
