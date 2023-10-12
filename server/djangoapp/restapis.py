@@ -18,6 +18,25 @@ def get_request(url, **kwargs):
     json_data = json.loads(response.text)
     return json_data
 
+# Define the post_request function:
+def post_request(url, **kwargs):
+    try:
+        # Make a POST request to the provided URL with the kwargs as the data
+        response = requests.post(url, json=kwargs)
+
+        # If the request was successful, return the JSON response
+        if response.status_code == 200:
+            return response.json()
+        else:
+            # Print the error and return None if something went wrong
+            print(f"Request failed with status code {response.status_code}: {response.text}")
+            return None
+
+    except requests.RequestException as e:
+        # Handle any errors that arise during the request
+        print(f"Request failed: {str(e)}")
+        return None
+
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
@@ -93,6 +112,28 @@ def get_dealer_reviews_from_cf(url, dealerId):
             results.append(review_obj)
 
     return results
+
+
+# Create a post_dealer_reviews_to_cf
+def post_dealer_review_to_cf(url, reviewData):
+    # Prepare the payload to be sent with the POST request
+    payload = {
+        "action": "postReview",
+        "reviewData": reviewData
+    }
+
+    # Call post_request with the URL and payload
+    response = post_request(url, **payload)
+
+    # Check if the response was successful
+    if response and 'ok' in response and response['ok']:
+        # The review was successfully saved
+        return True
+    else:
+        # Something went wrong
+        print(f"Error posting review: {response.get('error', 'Unknown error')}")
+        return False
+
 
 
 

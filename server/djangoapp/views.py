@@ -9,7 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_dealer_review_to_cf
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -105,6 +105,47 @@ def get_dealer_details(request, dealer_id):
 
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+def add_review(request, dealer_id):
+    if request.method == "GET":
+        # Display form...
+        print('Form displayed here')
+    elif request.method == "POST":
+        # Extract form data
+        # review_data = {
+        #     "name": request.POST.get("name"),
+        #     "dealership": dealer_id,
+        #     "review": request.POST.get("review"),
+        #     "purchase": request.POST.get("purchase") == "true",
+        #     "purchase_date": request.POST.get("purchase_date"),
+        #     "car_make": request.POST.get("car_make"),
+        #     "car_model": request.POST.get("car_model"),
+        #     "car_year": int(request.POST.get("car_year"))
+        # }
+        review_data = {
+            "name": "John Doe",
+            "dealership": "123456",
+            "review": "Great dealership, friendly staff and excellent service.",
+            "purchase": "true",
+            "purchase_date": "2023-10-10",
+            "car_make": "Toyota",
+            "car_model": "Camry",
+            "car_year": 2023
+        }
 
+        # Construct the data to be sent to the API
+        review_data_payload = {
+            "action": "postReview",
+            "reviewData": review_data
+        }
+
+        # Endpoint to post the review
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/ae0b8375-fe14-4488-a0ce-31d937867378/dealership-package/post-review"
+        
+        # Use the post_dealer_review_to_cf function
+        api_response = post_dealer_review_to_cf(url, review_data_payload)
+
+        # Redirect to the dealer details page or show error
+        if api_response:
+            return HttpResponseRedirect(f'/djangoapp/dealer/{dealer_id}/')  # Assuming this is the URL pattern for dealer details
+        else:
+            return HttpResponse(f"<p>error</p>")
